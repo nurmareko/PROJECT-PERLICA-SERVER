@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { logger, tokens, web } from './harness.js'
+import { accounts, logger, tokens, web } from './harness.js'
 
 // testing to register customer
 describe('pOST /api/customers', () => {
@@ -89,8 +89,8 @@ describe('pOST /api/customers/login', () => {
 
   it('should can login', async () => {
     const result = await supertest(web).post('/api/customers/login').send({
-      email: 'customer-fixture-3@example.test',
-      password: 'ExamplePassword2!',
+      email: accounts.customer.email,
+      password: accounts.credentials.password,
     })
 
     logger.info('Integration response', { status: result.status })
@@ -175,8 +175,8 @@ describe('gET /api/customers/current', () => {
       .set('Authorization', tokens.customer)
 
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('customer-fixture-4@example.test')
-    expect(result.body.data.name).toBe('Example Customer')
+    expect(result.body.data.email).toBe(accounts.customer.email)
+    expect(result.body.data.name).toBe(accounts.customer.name)
   })
 
   it('should reject if token is invalid', async () => {

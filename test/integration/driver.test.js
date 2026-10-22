@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { logger, tokens, web } from './harness.js'
+import { accounts, logger, tokens, web } from './harness.js'
 
 // testing to register driver
 describe('pOST /api/drivers', () => {
@@ -123,8 +123,8 @@ describe('pATCH /api/drivers/resetPassword', () => {
 describe('pOST /api/drivers/login', () => {
   it('should can login', async () => {
     const result = await supertest(web).post('/api/drivers/login').send({
-      email: 'driver-fixture-6@example.test',
-      password: 'ExamplePassword4!',
+      email: accounts.driver.email,
+      password: accounts.credentials.password,
     })
 
     logger.info('Integration response', { status: result.status })
@@ -191,7 +191,7 @@ describe('pATCH /api/drivers/changePassword', () => {
       .patch('/api/drivers/changePassword')
       .set('Authorization', tokens.driver)
       .send({
-        oldPassword: 'ExamplePassword5!',
+        oldPassword: accounts.credentials.password,
         newPassword: 'ExamplePassword6!',
       })
 

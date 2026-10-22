@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import process from 'node:process'
 
 // Keep this module free of application imports and dotenv loading.
@@ -14,10 +15,22 @@ function required(name) {
 }
 
 const databaseUrl = required('TEST_DATABASE_URL')
+// A naming guard is an extra safeguard, not a substitute for dedicated DB credentials.
+let database
+try {
+  database = new URL(databaseUrl)
+}
+catch {
+  throw new Error('Integration tests refused: TEST_DATABASE_URL must be a valid MySQL URL')
+}
+if (database.protocol !== 'mysql:' || !/^\/\w+_test$/i.test(database.pathname)) {
+  throw new Error('Integration tests refused: TEST_DATABASE_URL must select a MySQL database ending in _test')
+}
+
 export const tokens = Object.freeze({
-  admin: required('TEST_ADMIN_TOKEN'),
-  customer: required('TEST_CUSTOMER_TOKEN'),
-  driver: required('TEST_DRIVER_TOKEN'),
+  admin: randomUUID(),
+  customer: randomUUID(),
+  driver: randomUUID(),
 })
 
 // Mock-only values: nodemailer is replaced in setup.js and never opens a transport.

@@ -1,13 +1,13 @@
 import supertest from 'supertest'
-import { logger, tokens, web } from './harness.js'
+import { accounts, logger, tokens, web } from './harness.js'
 
 // testing to login
 
 describe('pOST /api/admin/login', () => {
   it('should can login', async () => {
     const result = await supertest(web).post('/api/admin/login').send({
-      email: 'admin-fixture-1@example.test',
-      password: 'ExamplePassword1!',
+      email: accounts.admin.email,
+      password: accounts.credentials.password,
     })
 
     logger.info('Integration response', { status: result.status })
@@ -78,7 +78,7 @@ describe('pATCH /api/admin/updateFare', () => {
       .patch('/api/admin/updateFare')
       .set('Authorization', tokens.admin)
       .send({
-        fareId: 1,
+        fareId: accounts.fare.id,
         farePerKm: 16000,
       })
 
@@ -95,7 +95,7 @@ describe('pATCH /api/admin/activateDriverAccount', () => {
       .patch('/api/admin/activateDriverAccount')
       .set('Authorization', tokens.admin)
       .send({
-        driverId: 1,
+        driverId: accounts.driver.id,
       })
 
     logger.info('Integration response', { status: result.status })
@@ -111,7 +111,7 @@ describe('pATCH /api/admin/deactivateDriverAccount', () => {
       .patch('/api/admin/deactivateDriverAccount')
       .set('Authorization', tokens.admin)
       .send({
-        driverId: 1,
+        driverId: accounts.driver.id,
       })
 
     logger.info('Integration response', { status: result.status })
@@ -127,7 +127,7 @@ describe('pATCH /api/admin/activateCustomerAccount', () => {
       .patch('/api/admin/activateCustomerAccount')
       .set('Authorization', tokens.admin)
       .send({
-        customerId: 1,
+        customerId: accounts.customer.id,
       })
 
     logger.info('Integration response', { status: result.status })
@@ -143,7 +143,7 @@ describe('pATCH /api/admin/deactivateCustomerAccount', () => {
       .patch('/api/admin/deactivateCustomerAccount')
       .set('Authorization', tokens.admin)
       .send({
-        customerId: 1,
+        customerId: accounts.customer.id,
       })
 
     logger.info('Integration response', { status: result.status })

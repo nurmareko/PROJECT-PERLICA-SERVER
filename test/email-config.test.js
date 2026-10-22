@@ -100,10 +100,8 @@ describe('email configuration without real delivery', () => {
 
   it('clears inherited SMTP and email settings before assigning fictional integration values', async () => {
     vi.stubEnv('RUN_INTEGRATION_TESTS', 'true')
-    vi.stubEnv('TEST_DATABASE_URL', 'mysql://fictional:fictional@localhost:3306/mock_only')
-    vi.stubEnv('TEST_ADMIN_TOKEN', 'fictional-admin')
-    vi.stubEnv('TEST_CUSTOMER_TOKEN', 'fictional-customer')
-    vi.stubEnv('TEST_DRIVER_TOKEN', 'fictional-driver')
+    vi.stubEnv('TEST_DATABASE_URL', 'mysql://fictional:fictional@localhost:3306/mock_only_test')
+
     vi.stubEnv('DATABASE_URL', undefined)
     for (const prefix of ['EMAIL_', 'SMTP_', 'ACCOUNT_EMAIL_', 'REPORT_EMAIL_', 'AUTH_MAILER_', 'REPORT_MAILER_']) {
       vi.stubEnv(`${prefix}INHERITED`, 'must-be-removed')
