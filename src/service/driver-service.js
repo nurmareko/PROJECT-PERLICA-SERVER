@@ -1,16 +1,16 @@
 import process from 'node:process'
 import bcrypt from 'bcryptjs'
-import { initializeApp } from 'firebase/app'
+
 import {
   getDownloadURL,
-  getStorage,
+
   ref,
   uploadBytesResumable,
 } from 'firebase/storage'
 import { v4 as uuid } from 'uuid'
 import { prismaClient } from '../application/database.js'
 import { logger } from '../application/logging.js'
-import config from '../config/firebase.config.js'
+import { storage } from '../config/firebase-client.config.js'
 import { ResponseError } from '../error/response-error.js'
 import { sendOTPForgotPasswordDriverByEmail } from '../utils/sendEmailForgotPassword.js'
 import { sendOTPRegisterDriverByEmail } from '../utils/sendEmailRegister.js'
@@ -31,10 +31,6 @@ import {
   verificationEmailRegisterDriverValidation,
 } from '../validation/driver-validation.js'
 import { validate } from '../validation/validation.js'
-
-initializeApp(config.firebaseConfig)
-
-const storage = getStorage()
 
 async function register(request) {
   const driver = validate(registerDriverValidation, request)
