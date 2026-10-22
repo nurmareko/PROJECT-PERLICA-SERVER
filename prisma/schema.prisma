@@ -1,0 +1,224 @@
+generator client {
+  provider = "prisma-client"
+    output = "../src/generated/prisma"
+    moduleFormat = "esm"
+    generatedFileExtension = "ts"
+    importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "mysql"
+
+}
+
+model Customer {
+  id             Int            @id @default(autoincrement())
+  email          String         @unique @db.VarChar(255)
+  name           String         @db.VarChar(255)
+  phoneNumber    String         @unique @db.VarChar(20)
+  password       String         @db.VarChar(255)
+  photo          String?        @db.VarChar(255)
+  token          String?        @db.VarChar(255)
+  tokenExpiry    DateTime?
+  otp            String?        @db.VarChar(4)
+  otpExpiry      DateTime?
+  verifiedEmail  Boolean?
+  status         Boolean?
+  lat            Float?
+  long           Float?
+  deviceToken    String?
+  createDatetime DateTime       @default(now())
+  updateDatetime DateTime       @default(now()) @updatedAt
+  // Relations
+  orders         Order[]
+  Review         Review[]
+  Message        Message[]
+  Notification   Notification[]
+  Report         Report[]
+
+  @@map("customers")
+}
+
+model Driver {
+  id             Int            @id @default(autoincrement())
+  noMembership   String         @unique @db.VarChar(20)
+  licensePlate   String         @unique @db.VarChar(10)
+  email          String         @unique @db.VarChar(255)
+  name           String         @db.VarChar(255)
+  phoneNumber    String         @unique @db.VarChar(50)
+  password       String         @db.VarChar(100)
+  photo          String?        @db.VarChar(255)
+  token          String?        @db.VarChar(255)
+  tokenExpiry    DateTime?
+  otp            String?        @db.VarChar(4)
+  otpExpiry      DateTime?
+  verifiedEmail  Boolean?
+  status         Boolean?
+  lat            Float?
+  long           Float?
+  deviceToken    String?
+  createDatetime DateTime       @default(now())
+  updateDatetime DateTime       @default(now()) @updatedAt
+  // Relations
+  Ride           Ride[]
+  Order          Order[]
+  Review         Review[]
+  Report         Report[]
+  Message        Message[]
+  Notification   Notification[]
+
+  @@map("drivers")
+}
+
+model Ride {
+  id             String   @id @default(uuid())
+  lat            Float
+  long           Float
+  pickupRadius   Int
+  rideStatus     Int
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+  driverId       Int
+  // Establish the relation
+  Driver         Driver   @relation(fields: [driverId], references: [id])
+  Order          Order[]
+
+  @@map("rides")
+}
+
+model Order {
+  id                        String   @id @default(uuid())
+  lat                       Float
+  long                      Float
+  status                    Int
+  customerToAirportDistance Int
+  farePerKm                 String
+  cost                      String
+  createDatetime            DateTime @default(now())
+  updateDatetime            DateTime @default(now()) @updatedAt
+  rideId                    String
+  customerId                Int
+  driverId                  Int
+  ride                      Ride     @relation(fields: [rideId], references: [id])
+  customer                  Customer @relation(fields: [customerId], references: [id])
+  driver                    Driver   @relation(fields: [driverId], references: [id])
+
+  //  relations
+  Review       Review[]
+  Report       Report[]
+  Message      Message[]
+  Notification Notification[]
+
+  @@map("orders")
+}
+
+model Review {
+  id             Int      @id @default(autoincrement())
+  customerRating Float?
+  driverRating   Float?
+  customerReview String?
+  driverReview   String?
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+  orderId        String   @unique
+  customerId     Int
+  driverId       Int
+  customer       Customer @relation(fields: [customerId], references: [id])
+  driver         Driver   @relation(fields: [driverId], references: [id])
+  order          Order    @relation(fields: [orderId], references: [id])
+
+  @@map("reviews")
+}
+
+model Report {
+  id             Int      @id @default(autoincrement())
+  content        String?
+  senderType     String
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+  orderId        String
+  customerId     Int
+  driverId       Int
+  customer       Customer @relation(fields: [customerId], references: [id])
+  driver         Driver   @relation(fields: [driverId], references: [id])
+  order          Order    @relation(fields: [orderId], references: [id])
+
+  @@map("reports")
+}
+
+model Message {
+  id             Int      @id @default(autoincrement())
+  content        String?  @db.VarChar(255)
+  senderType     String
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+  orderId        String
+  customerId     Int
+  driverId       Int
+  customer       Customer @relation(fields: [customerId], references: [id])
+  driver         Driver   @relation(fields: [driverId], references: [id])
+  order          Order    @relation(fields: [orderId], references: [id])
+
+  @@map("messages")
+}
+
+model Notification {
+  id             Int      @id @default(autoincrement())
+  title          String   @db.VarChar(255)
+  content        String?  @db.VarChar(255)
+  recipientType  String
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+  customerId     Int
+  driverId       Int
+  orderId        String
+
+  customer Customer @relation(fields: [customerId], references: [id])
+  driver   Driver   @relation(fields: [driverId], references: [id])
+  order    Order    @relation(fields: [orderId], references: [id])
+
+  @@map("notifications")
+}
+
+model Airport {
+  id             Int      @id @default(autoincrement())
+  name           String   @db.VarChar(255)
+  address        String   @db.VarChar(255)
+  status         Int
+  lat            Float
+  long           Float
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+
+  @@map("airport")
+}
+
+model Admin {
+  id             Int       @id @default(autoincrement())
+  username       String
+  password       String
+  fullName       String
+  email          String    @unique @db.VarChar(255)
+  phoneNumber    String
+  photo          String?
+  token          String?   @db.VarChar(255)
+  tokenExpiry    DateTime?
+  createDatetime DateTime
+  updateDatetime DateTime
+
+  // relations
+  Fare Fare[]
+
+  @@map("admin")
+}
+
+model Fare {
+  id             Int      @id @default(autoincrement())
+  farePerKm      Int
+  createDatetime DateTime @default(now())
+  updateDatetime DateTime @default(now()) @updatedAt
+  adminId        Int      @unique
+  admin          Admin    @relation(fields: [adminId], references: [id])
+
+  @@map("fare")
+}

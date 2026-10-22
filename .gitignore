@@ -1,0 +1,26 @@
+# Dependencies and package-manager cache
+node_modules/
+.npm/
+
+# Generated code and build output
+/src/generated/prisma/
+/dist/
+
+# Test coverage and lint cache
+/coverage/
+.eslintcache
+
+# Logs
+*.log
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Local Firebase credentials
+/src/config/push-notification-key.json
+
+# Operating-system files
+.DS_Store
+Thumbs.db
