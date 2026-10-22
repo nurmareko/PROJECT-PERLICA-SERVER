@@ -9,8 +9,8 @@ vi.mock('dotenv', () => ({ default: { config: () => ({ parsed: {} }) } }))
 vi.mock('../../src/utils/sendPushNotification.js', () => ({
   default: async () => {},
 }))
-vi.mock('../../src/config/firebase.config.js', () => ({
-  default: { firebaseConfig: {} },
+vi.mock('../../src/config/firebase-client.config.js', () => ({
+  storage: {},
 }))
 vi.mock('firebase/app', () => ({ initializeApp: () => ({}) }))
 vi.mock('firebase/storage', () => ({

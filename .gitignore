@@ -18,7 +18,8 @@ node_modules/
 .env.*
 !.env.example
 
-# Local Firebase credentials
+# Local Firebase configuration and credentials
+/src/config/firebaseConfig.js
 /src/config/push-notification-key.json
 
 # Operating-system files

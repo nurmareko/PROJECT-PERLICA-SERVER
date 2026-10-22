@@ -1,17 +1,5 @@
-import { readFileSync } from 'node:fs'
-import { cert, initializeApp } from 'firebase-admin/app'
-import { getMessaging } from 'firebase-admin/messaging'
 import { logger } from '../application/logging.js'
-
-// Membaca dan menginisialisasi Firebase Admin SDK
-const serviceAccount = JSON.parse(
-  readFileSync('./src/config/push-notification-key.json'),
-)
-
-const app = initializeApp({
-  credential: cert(serviceAccount),
-  projectId: serviceAccount.project_id,
-})
+import { messaging } from '../config/firebase-admin.config.js'
 
 /**
  * Fungsi untuk mengirim notifikasi push
@@ -39,7 +27,7 @@ async function sendPushNotification(title, body, token, data = {}) {
   logger.info('Sending push notification')
 
   try {
-    await getMessaging(app).send(message)
+    await messaging.send(message)
     logger.info('Push notification sent successfully')
   }
   catch (error) {
