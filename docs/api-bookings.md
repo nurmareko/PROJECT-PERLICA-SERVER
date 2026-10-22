@@ -99,4 +99,4 @@ Base path: `/api/drivers/rides`.
 | PATCH `/completeRide` | RideId → `{ driverId: int }` | Return target driver; any source → `1`. No ownership/active-order check. |
 | PATCH `/completeAndCloseRide` | RideId → `{ driverId: int }` | Return target driver; `1 → 3`, else 400 `Ride cannot be complated and closed`. No ownership/active-order check. |
 | PATCH `/cancelRide` | RideId → `{ driverId: int }` | Return target driver; `0 → 2`, else 400 `Ride cannot be cancelled`. No ownership/active-order check. |
-| GET `/getHistoryRide` | none → (Ride + Times)[] | Caller's status `2,3`; stored timestamps. |
+| GET `/getHistoryRide` | none → Ride + Times | Caller's status `2,3`; stored timestamps. |
