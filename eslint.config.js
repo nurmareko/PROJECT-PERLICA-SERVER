@@ -6,6 +6,7 @@ export default antfu({
   ignores: [
     'src/generated/**',
     'src/config/push-notification-key.json',
+    'test/check-google-maps.js',
   ],
 }, {
   files: ['test/**/*.test.js'],

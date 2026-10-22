@@ -26,7 +26,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run --globals --no-file-parallelism --exclude test/integration/**",
-    "test:integration": "vitest run --config vitest.integration.config.js"
+    "test:integration": "vitest run --config vitest.integration.config.js",
+
+    "check:google-maps": "node test/check-google-maps.js"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.10.1",
