@@ -2,7 +2,7 @@ import process from 'node:process'
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
 
-dotenv.config()
+dotenv.config({ quiet: true })
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
