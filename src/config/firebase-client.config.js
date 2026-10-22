@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getStorage } from 'firebase/storage'
-import firebaseConfig from './firebaseConfig.js'
+import { firebaseConfig } from './firebaseConfig.js'
 
 const app = initializeApp(firebaseConfig)
 
