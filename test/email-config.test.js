@@ -7,11 +7,11 @@ vi.mock('dotenv', () => ({ default: { config: vi.fn() } }))
 vi.mock('nodemailer', () => ({ default: { createTransport: vi.fn() } }))
 
 const settings = {
-  SMTP_HOST: 'smtp.example.test',
+  SMTP_HOST: 'smtp.example.com',
   SMTP_PORT: '2525',
-  AUTH_MAILER_EMAIL: 'account@example.test',
+  AUTH_MAILER_EMAIL: 'account@example.com',
   AUTH_MAILER_APP_PASSWORD: 'fictional-account-password',
-  REPORT_MAILER_EMAIL: 'report@example.test',
+  REPORT_MAILER_EMAIL: 'report@example.com',
   REPORT_MAILER_APP_PASSWORD: 'fictional-report-password',
 }
 const info = { messageId: 'mock-only' }
@@ -71,13 +71,13 @@ const accountCases = [
 describe('email configuration without real delivery', () => {
   it.each(accountCases)('%s: %s uses the account sender and credentials', async (moduleName, functionName) => {
     const emails = await import(`../src/utils/${moduleName}.js`)
-    await expect(emails[functionName]('recipient@example.test', '123456', 'Test User')).resolves.toEqual(info)
+    await expect(emails[functionName]('recipient@example.com', '123456', 'Test User')).resolves.toEqual(info)
 
     expectTransport('AUTH')
     expect(sendMail).toHaveBeenCalledTimes(1)
     expect(sendMail.mock.calls[0][0]).toMatchObject({
       from: settings.AUTH_MAILER_EMAIL,
-      to: 'recipient@example.test',
+      to: 'recipient@example.com',
     })
   })
 
@@ -86,7 +86,7 @@ describe('email configuration without real delivery', () => {
     ['sendDriverReportEmail', 'AUTH'],
   ])('%s preserves sender and recipients with report credentials', async (functionName, sender) => {
     const emails = await import('../src/utils/sendEmailReport.js')
-    await expect(emails[functionName]('recipient@example.test', 'Test User', 'order-1', 'Test complaint'))
+    await expect(emails[functionName]('recipient@example.com', 'Test User', 'order-1', 'Test complaint'))
       .resolves
       .toEqual([info, info])
 
@@ -94,7 +94,7 @@ describe('email configuration without real delivery', () => {
     expect(sendMail).toHaveBeenCalledTimes(2)
     expect(sendMail.mock.calls.map(([options]) => ({ from: options.from, to: options.to }))).toEqual([
       { from: settings[`${sender}_MAILER_EMAIL`], to: settings.AUTH_MAILER_EMAIL },
-      { from: settings[`${sender}_MAILER_EMAIL`], to: 'recipient@example.test' },
+      { from: settings[`${sender}_MAILER_EMAIL`], to: 'recipient@example.com' },
     ])
   })
 
@@ -114,11 +114,11 @@ describe('email configuration without real delivery', () => {
       expect(process.env[`${prefix}INHERITED`]).toBeUndefined()
     }
     expect(process.env).toMatchObject({
-      SMTP_HOST: 'smtp.example.test',
+      SMTP_HOST: 'smtp.example.com',
       SMTP_PORT: '2525',
-      AUTH_MAILER_EMAIL: 'primary@example.test',
+      AUTH_MAILER_EMAIL: 'primary@example.com',
       AUTH_MAILER_APP_PASSWORD: 'fictional-primary-password',
-      REPORT_MAILER_EMAIL: 'secondary@example.test',
+      REPORT_MAILER_EMAIL: 'secondary@example.com',
       REPORT_MAILER_APP_PASSWORD: 'fictional-secondary-password',
     })
     expect(nodemailer.createTransport).not.toHaveBeenCalled()

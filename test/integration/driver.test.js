@@ -5,7 +5,7 @@ import { accounts, logger, tokens, web } from './harness.js'
 describe('pOST /api/drivers', () => {
   it('should can register new driver', async () => {
     const result = await supertest(web).post('/api/drivers').send({
-      email: 'driver-fixture-6@example.test',
+      email: 'driver-fixture-6@example.com',
       name: 'Example Driver',
       noMembership: 'member123',
       licensePlate: 'AB 1234 CD',
@@ -15,7 +15,7 @@ describe('pOST /api/drivers', () => {
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-6@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-6@example.com')
     expect(result.body.data.password).toBeUndefined()
   })
 })
@@ -27,12 +27,12 @@ describe('pOST /api/drivers/resendOTPEmailRegister', () => {
     const result = await supertest(web)
       .post('/api/drivers/resendOTPEmailRegister')
       .send({
-        email: 'driver-fixture-7@example.test',
+        email: 'driver-fixture-7@example.com',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-7@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-7@example.com')
   })
 })
 
@@ -42,13 +42,13 @@ describe('pOST /api/drivers/verificationEmailRegister', () => {
     const result = await supertest(web)
       .post('/api/drivers/verificationEmailRegister')
       .send({
-        email: 'driver-fixture-6@example.test',
+        email: 'driver-fixture-6@example.com',
         otp: '9872',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-6@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-6@example.com')
   })
 })
 
@@ -59,12 +59,12 @@ describe('pOST /api/drivers/forgotPassword', () => {
     const result = await supertest(web)
       .post('/api/drivers/forgotPassword')
       .send({
-        email: 'driver-fixture-7@example.test',
+        email: 'driver-fixture-7@example.com',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-7@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-7@example.com')
   })
 })
 
@@ -75,12 +75,12 @@ describe('pOST /api/drivers/resendOTPEmailForgotPassword', () => {
     const result = await supertest(web)
       .post('/api/drivers/resendOTPEmailForgotPassword')
       .send({
-        email: 'driver-fixture-7@example.test',
+        email: 'driver-fixture-7@example.com',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-7@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-7@example.com')
   })
 })
 
@@ -91,13 +91,13 @@ describe('pOST /api/drivers/verificationEmailForgotPassword', () => {
     const result = await supertest(web)
       .post('/api/drivers/verificationEmailForgotPassword')
       .send({
-        email: 'driver-fixture-7@example.test',
+        email: 'driver-fixture-7@example.com',
         otp: '3993',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-7@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-7@example.com')
   })
 })
 
@@ -108,13 +108,13 @@ describe('pATCH /api/drivers/resetPassword', () => {
     const result = await supertest(web)
       .patch('/api/drivers/resetPassword')
       .send({
-        email: 'driver-fixture-7@example.test',
+        email: 'driver-fixture-7@example.com',
         password: 'ExamplePassword5!',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('driver-fixture-7@example.test')
+    expect(result.body.data.email).toBe('driver-fixture-7@example.com')
   })
 })
 

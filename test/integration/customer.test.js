@@ -5,7 +5,7 @@ import { accounts, logger, tokens, web } from './harness.js'
 describe('pOST /api/customers', () => {
   it('should can register new customer', async () => {
     const result = await supertest(web).post('/api/customers').send({
-      email: 'customer-fixture-2@example.test',
+      email: 'customer-fixture-2@example.com',
       name: 'Example Customer',
       phoneNumber: '+12025550101',
       password: 'ExamplePassword2!',
@@ -13,13 +13,13 @@ describe('pOST /api/customers', () => {
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('customer-fixture-3@example.test')
+    expect(result.body.data.email).toBe('customer-fixture-3@example.com')
     expect(result.body.data.password).toBeUndefined()
   })
 
   it('should reject the registration if the email is already registered (email verified)', async () => {
     const result = await supertest(web).post('/api/customers').send({
-      email: 'customer-fixture-4@example.test',
+      email: 'customer-fixture-4@example.com',
       name: 'Example Customer',
       phoneNumber: '+12025550101',
       password: 'ExamplePassword2!',
@@ -32,7 +32,7 @@ describe('pOST /api/customers', () => {
 
   it('registration if the email is already registered (email not verified)', async () => {
     const result = await supertest(web).post('/api/customers').send({
-      email: 'customer-fixture-3@example.test',
+      email: 'customer-fixture-3@example.com',
       name: 'Example Customer',
       phoneNumber: '+12025550101',
       password: 'ExamplePassword2!',
@@ -50,13 +50,13 @@ describe('pOST /api/customers/verificationEmailRegister', () => {
     const result = await supertest(web)
       .post('/api/customers/verificationEmailRegister')
       .send({
-        email: 'customer-fixture-3@example.test',
+        email: 'customer-fixture-3@example.com',
         otp: '4365',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('customer-fixture-3@example.test')
+    expect(result.body.data.email).toBe('customer-fixture-3@example.com')
   })
 })
 
@@ -67,12 +67,12 @@ describe('pOST /api/customers/resendOTPEmailRegister', () => {
     const result = await supertest(web)
       .post('/api/customers/resendOTPEmailRegister')
       .send({
-        email: 'customer-fixture-3@example.test',
+        email: 'customer-fixture-3@example.com',
       })
 
     logger.info('Integration response', { status: result.status })
     expect(result.status).toBe(200)
-    expect(result.body.data.email).toBe('customer-fixture-3@example.test')
+    expect(result.body.data.email).toBe('customer-fixture-3@example.com')
   })
 })
 
@@ -102,7 +102,7 @@ describe('pOST /api/customers/login', () => {
 
   it('should cant login (email not verified)', async () => {
     const result = await supertest(web).post('/api/customers/login').send({
-      email: 'customer-fixture-4@example.test',
+      email: 'customer-fixture-4@example.com',
       password: 'ExamplePassword2!',
     })
 
@@ -128,7 +128,7 @@ describe('pOST /api/customers/login', () => {
 
   it('should reject login if email is wrong', async () => {
     const result = await supertest(web).post('/api/customers/login').send({
-      email: 'customer-fixture-5@example.test',
+      email: 'customer-fixture-5@example.com',
       password: 'ExamplePassword2!',
     })
 
@@ -140,7 +140,7 @@ describe('pOST /api/customers/login', () => {
 
   it('should reject login if password is wrong', async () => {
     const result = await supertest(web).post('/api/customers/login').send({
-      email: 'customer-fixture-4@example.test',
+      email: 'customer-fixture-4@example.com',
       password: 'ExamplePassword3!',
     })
 

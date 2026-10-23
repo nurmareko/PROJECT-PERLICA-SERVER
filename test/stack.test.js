@@ -72,7 +72,7 @@ describe('external service configuration', () => {
   })
 
   describe.each(['customer', 'driver'])('%s default photo', (model) => {
-    it.each([undefined, '', 'https://example.test/default.png'])('uses the optional photo URL or null (%j)', async (photo) => {
+    it.each([undefined, '', 'https://example.com/default.png'])('uses the optional photo URL or null (%j)', async (photo) => {
       vi.stubEnv(`FALLBACK_${model.toUpperCase()}_AVATAR_URL`, photo)
       const { default: service } = await import(`../src/service/${model}-service.js`)
       vi.spyOn(prismaClient[model], 'count').mockResolvedValue(0)
@@ -120,7 +120,7 @@ describe('upgraded server stack', () => {
   it('preserves CORS preflight handling', async () => {
     const result = await supertest(web)
       .options('/api/customers')
-      .set('Origin', 'https://example.test')
+      .set('Origin', 'https://example.com')
       .set('Access-Control-Request-Method', 'POST')
     expect(result.status).toBe(204)
     expect(result.headers['access-control-allow-origin']).toBe('*')

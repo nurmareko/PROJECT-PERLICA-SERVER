@@ -35,11 +35,11 @@ export const tokens = Object.freeze({
 
 // Mock-only values: nodemailer is replaced in setup.js and never opens a transport.
 const emailSettings = {
-  SMTP_HOST: 'smtp.example.test',
+  SMTP_HOST: 'smtp.example.com',
   SMTP_PORT: '2525',
-  AUTH_MAILER_EMAIL: 'primary@example.test',
+  AUTH_MAILER_EMAIL: 'primary@example.com',
   AUTH_MAILER_APP_PASSWORD: 'fictional-primary-password',
-  REPORT_MAILER_EMAIL: 'secondary@example.test',
+  REPORT_MAILER_EMAIL: 'secondary@example.com',
   REPORT_MAILER_APP_PASSWORD: 'fictional-secondary-password',
 }
 

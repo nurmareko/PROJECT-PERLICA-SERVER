@@ -19,10 +19,10 @@ export async function seedDevelopment(prisma, env) {
 
   return prisma.$transaction(async (tx) => {
     const admin = await tx.admin.upsert({
-      where: { email: 'admin@example.test' },
+      where: { email: 'admin@example.com' },
       update: {},
       create: {
-        email: 'admin@example.test',
+        email: 'admin@example.com',
         username: 'dev-admin',
         fullName: 'Development Admin',
         password: adminPassword,
@@ -33,10 +33,10 @@ export async function seedDevelopment(prisma, env) {
     })
 
     await tx.customer.upsert({
-      where: { email: 'customer@example.test' },
+      where: { email: 'customer@example.com' },
       update: {},
       create: {
-        email: 'customer@example.test',
+        email: 'customer@example.com',
         name: 'Development Customer',
         phoneNumber: '+620000000002',
         password,
@@ -48,10 +48,10 @@ export async function seedDevelopment(prisma, env) {
     })
 
     await tx.driver.upsert({
-      where: { email: 'driver@example.test' },
+      where: { email: 'driver@example.com' },
       update: {},
       create: {
-        email: 'driver@example.test',
+        email: 'driver@example.com',
         name: 'Development Driver',
         phoneNumber: '+620000000003',
         noMembership: 'DEV-001',

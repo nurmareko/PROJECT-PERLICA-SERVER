@@ -17,7 +17,7 @@ vi.mock('firebase/storage', () => ({
   getStorage: () => ({}),
   ref: () => ({}),
   uploadBytesResumable: async () => ({ ref: {} }),
-  getDownloadURL: async () => 'https://storage.example.test/fictional-upload.png',
+  getDownloadURL: async () => 'https://storage.example.com/fictional-upload.png',
 }))
 
 // Support both callback and promise callers without creating an SMTP transport.
