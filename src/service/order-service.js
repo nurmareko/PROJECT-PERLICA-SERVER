@@ -77,30 +77,66 @@ async function getDirections(
   destinationLat,
   destinationLong,
 ) {
+  const directionsFromResponse = (data) => {
+    if (data === null || typeof data !== 'object') {
+      throw new ResponseError(502, 'Invalid directions response')
+    }
+
+    const routes = data.routes
+
+    if (routes.length === 0) {
+      throw new ResponseError(404, 'No driving route found')
+    }
+
+    const route = routes[0]
+    const distance = route.distanceMeters
+    const durationText = route.duration
+    const duration = Number(durationText.slice(0, -1))
+
+    return { distance, duration }
+  }
+
   const apiKey = getMapsApiKey()
-  const mode = 'driving'
-  const apiUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${originLat},${originLong}&destination=${destinationLat},${destinationLong}&mode=${mode}&key=${apiKey}`
+  const url = 'https://routes.googleapis.com/directions/v2:computeRoutes'
+  const data = {
+    origin: {
+      location: {
+        latLng: {
+          latitude: originLat,
+          longitude: originLong,
+        },
+      },
+    },
+    destination: {
+      location: {
+        latLng: {
+          latitude: destinationLat,
+          longitude: destinationLong,
+        },
+      },
+    },
+  }
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': 'routes.distanceMeters,routes.duration',
+    },
+    timeout: 10000,
+  }
+
+  let response
 
   try {
-    const response = await axios.get(apiUrl)
-    const data = response.data
-
-    if (data.status === 'OK') {
-      const route = data.routes[0]
-      const legs = route.legs[0]
-      const distance = legs.distance.value
-      const duration = legs.duration.value
-
-      return { distance, duration }
-    }
-    else {
-      throw new ResponseError(500, 'Failed to fetch directions data')
-    }
+    response = await axios.post(url, data, config)
   }
   catch {
-    console.error('Error fetching directions data')
-    throw new ResponseError(500, 'Failed to fetch directions data')
+    logger.error('Google Routes request failed')
+    throw new ResponseError(502, 'Failed to fetch directions data')
   }
+
+  return directionsFromResponse(response.data)
 }
 
 async function getTaxisWithinRadius(email) {
